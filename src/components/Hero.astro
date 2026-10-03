@@ -1,0 +1,45 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  showDemo: boolean;
+}
+const { showDemo } = Astro.props;
+---
+<section class="hero">
+  <div class="hero-copy reveal">
+    <p class="eyebrow"><span class="dot"></span>Aditya Upadhyay / Forward Deployed Engineer / open to new engagements</p>
+    <h1 class="display">I turn whiteboard promises into systems that <em>actually run.</em></h1>
+    <p class="lead">I join customer teams where the hard problems live, untangle how their platforms really talk to each other, and ship the integrations, AI agents and tooling that close the gap. Then I write it all down so the next team moves faster.</p>
+    <div class="actions">
+      <a class="btn btn-accent" href="#work">
+        View selected work
+        <Icon name="arrowRight" size={18} />
+      </a>
+      {showDemo && (
+        <a class="btn btn-ghost" href="#videos">
+          <Icon name="play" size={18} />
+          Watch a demo
+        </a>
+      )}
+    </div>
+  </div>
+
+  <div class="console reveal" aria-label="How an engagement unfolds">
+    <div class="console-bar">
+      <span>engagement.log</span>
+      <span class="live"><span></span>live</span>
+    </div>
+    <ol class="console-body">
+      <li><span class="n">01</span> listen    <b>stakeholders, systems, constraints</b><i>found the real bottleneck on day two</i></li>
+      <li><span class="n">02</span> sketch    <b>one contract, many systems</b><i>every team signed off on the same diagram</i></li>
+      <li><span class="n">03</span> ship      <b>production</b><i>first live flow inside three weeks</i></li>
+      <li><span class="n">04</span> teach     <b>runbooks and recordings</b> <span class="cursor"></span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="toolkit" aria-label="Toolkit">
+  <span class="toolkit-label">Toolkit</span>
+  <span>Java</span><span>Python</span><span>TypeScript</span><span>TIBCO BWCE</span><span>REST and SOAP</span><span>Kafka</span><span>LLM agents</span><span>Docker</span><span>Kubernetes</span>
+</section>

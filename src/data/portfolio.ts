@@ -1,6 +1,6 @@
 /*
   Portfolio content lives here.
-  Edit, add, remove or reorder items and the page updates itself.
+  Edit, add, remove or reorder items and the page is rebuilt from it.
 
   Projects:   set demo, repo and video links per project ("" hides the button).
               impact: one measurable result, shown as a highlighted line ("" hides it).
@@ -10,9 +10,38 @@
               hidden, and the whole Videos section is hidden if none have one.
   Any section whose list is empty is hidden along with its nav link.
   Links:      your social profiles and email.
+  Resume:     put it at public/resume.pdf and the download button appears.
 */
 
-window.PORTFOLIO = {
+export interface Project {
+  title: string;
+  category: string;
+  year: string;
+  client: string;
+  summary: string;
+  impact?: string;
+  featured?: boolean;
+  stack: string[];
+  demo: string;
+  repo: string;
+  video: string;
+}
+export interface Role { when: string; role: string; org: string; points: string[] }
+export interface Post { date: string; title: string; blurb: string; read: string; href: string }
+export interface Video { title: string; tag: string; duration: string; blurb: string; youtubeId: string }
+export interface Repo { name: string; desc: string; lang: string; color: string; href: string }
+
+export interface Portfolio {
+  links: { email: string; github: string; linkedin: string; youtube: string };
+  categories: Record<string, string>;
+  projects: Project[];
+  experience: Role[];
+  writing: { articles: Post[]; blogs: Post[]; tutorials: Post[] };
+  videos: Video[];
+  repos: Repo[];
+}
+
+export const portfolio: Portfolio = {
   links: {
     email: "hello@adityaupadhyay.dev",
     github: "https://github.com/",

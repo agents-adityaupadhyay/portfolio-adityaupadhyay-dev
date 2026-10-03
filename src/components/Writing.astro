@@ -1,0 +1,39 @@
+---
+import Icon from './Icon.astro';
+import type { Post } from '../data/portfolio';
+
+interface Props {
+  tabs: { key: string; label: string; posts: Post[] }[]; // only non-empty tabs
+}
+const { tabs } = Astro.props;
+---
+<section id="writing" class="section">
+  <div class="section-head">
+    <div>
+      <p class="kicker">03 / Writing</p>
+      <h2 class="h2">Articles and <em>tutorials</em></h2>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Writing type" id="writing-tabs">
+      {tabs.map((t, i) => (
+        <button
+          class="tab" role="tab" id={`tab-${t.key}`} aria-controls={`panel-${t.key}`}
+          aria-selected={i === 0} tabindex={i === 0 ? 0 : -1}
+        >{t.label}</button>
+      ))}
+    </div>
+  </div>
+  {tabs.map((t, i) => (
+    <div class="post-list" id={`panel-${t.key}`} role="tabpanel" aria-labelledby={`tab-${t.key}`} hidden={i !== 0}>
+      {t.posts.map((p, j) => (
+        <a class="post" href={p.href} style={`animation-delay:${j * 50}ms`}>
+          <span class="date">{p.date}</span>
+          <span class="body">
+            <span class="title">{p.title}</span>
+            <span class="blurb">{p.blurb}</span>
+          </span>
+          <span class="read">{p.read}<span class="arrow"><Icon name="arrowUpRight" size={18} /></span></span>
+        </a>
+      ))}
+    </div>
+  ))}
+</section>

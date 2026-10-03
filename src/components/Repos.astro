@@ -1,0 +1,27 @@
+---
+import type { Repo } from '../data/portfolio';
+
+interface Props {
+  repos: Repo[];
+  github: string;
+}
+const { repos, github } = Astro.props;
+---
+<section id="repos" class="section">
+  <div class="section-head">
+    <div>
+      <p class="kicker">05 / Open source</p>
+      <h2 class="h2">On GitHub</h2>
+    </div>
+    <a class="btn btn-ghost" href={github} target="_blank" rel="noopener">View all repositories</a>
+  </div>
+  <div class="repo-grid">
+    {repos.map((r) => (
+      <a class="card repo" href={r.href} target="_blank" rel="noopener">
+        <span class="name">{r.name}</span>
+        <span class="desc">{r.desc}</span>
+        <span class="lang"><i style={`background:${r.color}`}></i>{r.lang}</span>
+      </a>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  nav: { id: string; label: string }[];
+}
+const { nav } = Astro.props;
+---
+<header class="site-header">
+  <nav class="nav container" aria-label="Main">
+    <a class="brand" href="#top">
+      <span class="brand-name">Aditya Upadhyay</span>
+      <span class="brand-tag">FDE</span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      {nav.map((n) => <a href={`#${n.id}`}>{n.label}</a>)}
+      <a class="btn btn-dark btn-sm" href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>

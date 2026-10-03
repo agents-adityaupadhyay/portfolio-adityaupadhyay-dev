@@ -1,32 +1,39 @@
 # pro-portfolio
 
-Personal portfolio for Aditya Upadhyay. Plain HTML, CSS and JavaScript. No build step.
+Personal portfolio for Aditya Upadhyay, built with [Astro](https://astro.build) and hosted on Cloudflare Workers at https://adityaupadhyay.dev.
 
 ## Run it
 
-Open `index.html` in a browser, or serve the folder:
-
 ```
-npx serve .
+npm install
+npm run dev        # http://localhost:4321, reloads as you edit
+npm run preview    # production build served by Cloudflare's local runtime, http://localhost:8787
 ```
 
 ## Edit content
 
-Everything you see on the page comes from `assets/js/data.js`:
+Everything you see on the page comes from `src/data/portfolio.ts`:
 
-- `projects`: title, category, summary, stack, and `demo`, `repo`, `video` links. An empty link hides its button.
+- `projects`: title, category, summary, stack, an optional `impact` line, `featured` for a wide card, and `demo`, `repo`, `video` links. An empty link hides its button.
 - `experience`: your roles, newest first.
 - `writing`: articles, blogs and tutorials.
-- `videos`: put the YouTube video ID in `youtubeId` to show the thumbnail and play it inline.
+- `videos`: put the YouTube video ID in `youtubeId`. Videos without one are hidden.
 - `repos`: GitHub repositories to feature.
 - `links`: email, GitHub, LinkedIn and YouTube.
 
-Add your resume as `assets/resume.pdf` for the download button.
+Sections with nothing in them are left off the page automatically.
+
+Add your resume as `public/resume.pdf` for the download button.
 
 ## Theme
 
-Colors and fonts are tokens at the top of `assets/css/styles.css`. Change `--accent` to recolor the site.
+Colors and fonts are tokens at the top of `src/styles/global.css`. Change `--accent` to recolor the site. Dark mode follows the visitor's system setting.
 
 ## Deploy
 
-Any static host works: GitHub Pages, Netlify, Vercel or Cloudflare Pages. Point it at this folder.
+```
+npx wrangler login     # once
+npm run deploy         # builds to dist/ and publishes it
+```
+
+`wrangler.jsonc` attaches the Worker to `adityaupadhyay.dev`. The domain's zone must be in the same Cloudflare account; Cloudflare creates the DNS record on first deploy.

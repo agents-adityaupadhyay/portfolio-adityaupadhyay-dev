@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  summary: string; // shorter line for link previews
+}
+const { title, description, summary } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#FAFAF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E0F12" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href={canonical}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <!-- Link previews (LinkedIn, Slack, X). Add an og:image (1200x630 PNG) when you have one. -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonical}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={summary}>
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={summary}>
+
+  <script is:inline>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <slot />
+</body>
+</html>

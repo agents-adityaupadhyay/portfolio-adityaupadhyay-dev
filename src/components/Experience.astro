@@ -1,0 +1,35 @@
+---
+import Icon from './Icon.astro';
+import type { Role } from '../data/portfolio';
+
+interface Props {
+  experience: Role[];
+  hasResume: boolean;
+}
+const { experience, hasResume } = Astro.props;
+---
+<section id="experience" class="section exp">
+  <div class="exp-intro reveal">
+    <p class="kicker">02 / Experience</p>
+    <h2 class="h2">Where I have deployed</h2>
+    <p class="muted">Integration platforms, enterprise middleware and AI agents, delivered inside the teams that depend on them.</p>
+    {hasResume && (
+      <a class="btn btn-ghost" href="/resume.pdf" download>
+        <Icon name="download" size={18} />
+        Download resume
+      </a>
+    )}
+  </div>
+  <ol class="timeline">
+    {experience.map((x) => (
+      <li>
+        <div class="when">{x.when}</div>
+        <div class="what">
+          <h3>{x.role}</h3>
+          <div class="org">{x.org}</div>
+          {x.points.length > 0 && <ul>{x.points.map((p) => <li>{p}</li>)}</ul>}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>

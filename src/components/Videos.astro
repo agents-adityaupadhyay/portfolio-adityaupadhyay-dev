@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+import type { Video } from '../data/portfolio';
+
+interface Props {
+  videos: Video[]; // only videos with a youtubeId
+  channel: string;
+}
+const { videos, channel } = Astro.props;
+const first = videos[0];
+const thumb = (v: Video) => `https://i.ytimg.com/vi/${encodeURIComponent(v.youtubeId)}/hqdefault.jpg`;
+---
+<section id="videos" class="section">
+  <p class="kicker">04 / Videos</p>
+  <h2 class="h2">Demos and walkthroughs</h2>
+  <div class="video-layout">
+    <div class="video-main">
+      <div class="player" id="player">
+        <img class="poster" src={thumb(first)} alt="">
+        <button class="play-btn" aria-label={`Play ${first.title}`}><Icon name="playSolid" /></button>
+        <span class="duration">{first.duration}</span>
+      </div>
+      <h3 class="video-title" id="video-title">{first.title}</h3>
+      <p class="muted" id="video-blurb">{first.blurb}</p>
+    </div>
+    <div class="playlist">
+      <div class="playlist-head">
+        <span>Playlist</span>
+        <a href={channel} target="_blank" rel="noopener">YouTube channel</a>
+      </div>
+      <div id="playlist">
+        {videos.map((v, i) => (
+          <button
+            class="track" aria-current={i === 0}
+            data-id={v.youtubeId} data-title={v.title} data-blurb={v.blurb} data-duration={v.duration}
+          >
+            <span class="thumb"><img src={thumb(v)} alt="" loading="lazy"></span>
+            <span>
+              <span class="t">{v.title}</span>
+              <span class="m">{v.tag} / {v.duration}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

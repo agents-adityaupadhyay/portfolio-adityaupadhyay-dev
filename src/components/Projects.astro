@@ -1,0 +1,75 @@
+---
+import Icon from './Icon.astro';
+import type { Project } from '../data/portfolio';
+
+interface Props {
+  projects: Project[];
+  categories: Record<string, string>;
+}
+const { projects, categories } = Astro.props;
+
+const filters = [
+  { key: 'all', label: 'All', count: projects.length },
+  ...Object.entries(categories).map(([key, label]) => ({
+    key, label, count: projects.filter((p) => p.category === key).length,
+  })),
+];
+const isExternal = (href: string) => /^https?:/.test(href);
+---
+<section id="work" class="section">
+  <div class="section-head">
+    <div>
+      <p class="kicker">01 / Selected work</p>
+      <h2 class="h2">Projects from <em>the field</em></h2>
+    </div>
+    <div class="pills" role="group" aria-label="Filter projects" id="project-filters">
+      {filters.map((f) => (
+        <button class="pill" data-k={f.key} aria-pressed={f.key === 'all'}>
+          {f.label} <span class="count">{f.count}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="project-grid" id="project-grid">
+    {projects.map((p, i) => {
+      const links = [
+        { href: p.demo, icon: 'demo', label: 'Live demo' },
+        { href: p.repo, icon: 'repo', label: 'Repository' },
+        { href: p.video, icon: 'play', label: 'Walkthrough' },
+      ].filter((l) => l.href) as { href: string; icon: 'demo' | 'repo' | 'play'; label: string }[];
+      return (
+        <article
+          class:list={['card', 'project', { featured: p.featured }]}
+          data-category={p.category}
+          style={`animation-delay:${i * 60}ms`}
+        >
+          <div class="project-meta">
+            <span>{String(i + 1).padStart(2, '0')} / {p.year}</span>
+            <span class="badge">{categories[p.category]}</span>
+          </div>
+          <div>
+            <h3>{p.title}</h3>
+            <div class="client">{p.client}</div>
+          </div>
+          <p>{p.summary}</p>
+          {p.impact && <div class="impact">{p.impact}</div>}
+          <div class="stack">{p.stack.map((s) => <span>{s}</span>)}</div>
+          {links.length > 0 && (
+            <div class="links">
+              {links.map((l) => (
+                <a
+                  class="link-btn"
+                  href={l.href}
+                  {...(isExternal(l.href) ? { target: '_blank', rel: 'noopener' } : {})}
+                >
+                  <Icon name={l.icon} />{l.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </article>
+      );
+    })}
+  </div>
+</section>

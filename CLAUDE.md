@@ -4,32 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Static personal portfolio (plain HTML/CSS/vanilla JS). No build step, no package manager, no linter, no tests. Remote: `github.com/agents-adityaupadhyay/portfolio-adityaupadhyay-dev`, branch `main`.
+Personal portfolio built with Astro (static output, no UI framework), deployed to Cloudflare Workers as static assets at `adityaupadhyay.dev`. Remote: `github.com/agents-adityaupadhyay/portfolio-adityaupadhyay-dev`, branch `main`. No tests.
 
-## Running
+## Commands
 
-- Open `index.html` directly, or serve the folder: `npx serve .`
-- Deploys to any static host pointed at the repo root.
+- `npm run dev`: Astro dev server with hot reload (http://localhost:4321).
+- `npm run build`: build to `dist/`.
+- `npm run check`: `astro check` (TypeScript + `.astro` type checking). Run this after edits.
+- `npm run preview`: build, then serve `dist/` with `wrangler dev` (http://localhost:8787), which matches production, including the 404 handling.
+- `npm run deploy`: build and `wrangler deploy`. Requires `npx wrangler login` once.
 
 ## Architecture
 
-Content and rendering are split across two scripts, loaded in order at the end of `index.html` (`data.js` then `main.js`):
+- `src/data/portfolio.ts` exports `portfolio` (typed by the `Portfolio` interface): links, categories, projects, experience, writing, videos, repos. All page content lives here.
+- `src/pages/index.astro` reads the data and decides at build time which sections render. Empty lists, videos without a `youtubeId`, and writing tabs with no posts are left out, and so are their nav links (`sections` array) and the hero "Watch a demo" button. The resume button renders only if `public/resume.pdf` exists at build time.
+- `src/components/*.astro` hold one section each and render the full HTML at build time (Astro escapes interpolations).
+- `src/scripts/main.ts` is the only client JS (Astro bundles it inline). It only toggles state on the prerendered DOM: project filter (`hidden` on cards by `data-category`), writing tabs (one prerendered `tabpanel` per tab), video player (swaps poster/iframe from `data-*` on `.track` buttons), mobile nav, scroll spy and reveal. Sections may be absent, so lookups are guarded.
+- `src/layouts/Base.astro` holds the `<head>`: meta, Open Graph tags, canonical (from `site` in `astro.config.mjs`), fonts, and the inline script that adds `html.js`. `.reveal` is only hidden under `.js`, so content stays visible without JS.
+- `public/` is copied as-is to `dist/` (favicon, resume.pdf).
+- `wrangler.jsonc` serves `./dist` only, with `not_found_handling: "404-page"` (`src/pages/404.astro`) and a custom-domain route.
 
-- `assets/js/data.js` defines a single global, `window.PORTFOLIO` (`links`, `categories`, `projects`, `experience`, `writing`, `videos`, `repos`). All page content lives here; content edits should not require touching HTML or `main.js`.
-- `assets/js/main.js` is one IIFE that reads `window.PORTFOLIO` and fills in the DOM by element ID (`#project-grid`, `#timeline`, `#post-list`, `#player`, `#repo-grid`, etc.) using string-built `innerHTML` plus delegated click handlers. Every interpolated value goes through `esc()`; keep doing that when adding rendering code.
-- `index.html` holds only static section scaffolding with the target IDs. Renaming an ID in the HTML requires updating the matching selector in `main.js` (a missing element throws at load, since selectors are not null-checked).
-- `assets/css/styles.css` starts with theme tokens (colors, fonts; `--accent` recolors the site).
+Data conventions:
 
-Data conventions that `main.js` relies on:
-
-- `projects[].category` must be a key of `categories`; the filter pills are generated from `categories`. `demo`/`repo`/`video` set to `""` hide that button; `#anchor` values are treated as internal links, `http(s)` as external (new tab).
-- `writing` is keyed by `articles`, `blogs`, `tutorials`, matching the `tabLabels` object in `main.js`; adding a new tab means updating both.
-- `projects[].impact` renders a highlighted result line; `featured: true` spans two grid columns at >=1000px (grid uses `dense` flow, so keep featured counts that tile cleanly).
-- `videos[]` without a `youtubeId` are filtered out.
-- Empty sections are removed at load by `dropSection(id)` in `main.js`, which also removes every `a[href="#id"]` (nav links, hero buttons). Writing tabs with no posts are dropped the same way.
-- The resume button is removed unless a `HEAD` request for `assets/resume.pdf` succeeds (so it is always hidden when opened via `file://`).
-- Scroll-reveal and nav highlighting use `IntersectionObserver` (`.reveal` elements get `.in`; sections with an `id` drive the active nav link). `.reveal` is only hidden under `html.js` (set by an inline script in `<head>`), so content stays visible without JS.
+- `projects[].category` must be a key of `categories` (filter pills come from `categories`). `demo`/`repo`/`video` set to `""` hide the button; `http(s)` links open in a new tab.
+- `projects[].impact` renders a highlighted result line. `featured: true` spans two grid columns at >=1000px (grid uses `dense` flow, so keep featured counts that tile cleanly).
+- Writing tabs are fixed to `articles`, `blogs`, `tutorials` (`tabLabels` in `index.astro`).
 
 ## Theming
 
-All colors are tokens on `:root` in `styles.css`, overridden in a `prefers-color-scheme: dark` block. Use tokens instead of literal colors: `--on-ink`/`--on-accent` for text on filled ink/accent backgrounds, and `--panel` for the always-dark blocks (console, video player, contact).
+All colors are tokens on `:root` in `src/styles/global.css`, overridden in a `prefers-color-scheme: dark` block. Use tokens instead of literal colors: `--on-ink`/`--on-accent` for text on filled ink/accent backgrounds, and `--panel` for the always-dark blocks (console, video player, contact). `[hidden]` is forced to `display: none !important` because cards set `display: flex`.

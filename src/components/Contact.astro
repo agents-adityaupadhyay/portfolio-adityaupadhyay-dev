@@ -1,0 +1,23 @@
+---
+import type { Portfolio } from '../data/portfolio';
+
+interface Props {
+  links: Portfolio['links'];
+}
+const { links } = Astro.props;
+---
+<section id="contact" class="contact reveal">
+  <div class="contact-copy">
+    <p class="kicker kicker-light">06 / Contact</p>
+    <h2 class="h2">Got a system that refuses to reach <em>production?</em></h2>
+    <p class="contact-sub">Tell me where it is stuck. I usually reply within a day.</p>
+  </div>
+  <div class="contact-actions">
+    <a class="btn btn-light btn-wide" href={`mailto:${links.email}`}>{links.email}</a>
+    <div class="socials">
+      <a href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a href={links.github} target="_blank" rel="noopener">GitHub</a>
+      <a href={links.youtube} target="_blank" rel="noopener">YouTube</a>
+    </div>
+  </div>
+</section>

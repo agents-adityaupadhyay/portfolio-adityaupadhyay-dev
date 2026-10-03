@@ -1,0 +1,20 @@
+---
+// Stroke icons share the .ic class; playSolid is filled.
+const paths = {
+  arrowRight: 'M5 12h14M13 6l6 6-6 6',
+  arrowUpRight: 'M7 17L17 7M9 7h8v8',
+  demo: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5',
+  repo: 'M8 7l-5 5 5 5M16 7l5 5-5 5',
+  play: 'M8 5l11 7-11 7z',
+  download: 'M12 4v11M7 10l5 5 5-5M5 20h14',
+} as const;
+
+interface Props {
+  name: keyof typeof paths | 'playSolid';
+  size?: number;
+}
+const { name, size = 16 } = Astro.props;
+---
+{name === 'playSolid'
+  ? <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d={paths.play} /></svg>
+  : <svg class="ic" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true"><path d={paths[name]} /></svg>}
