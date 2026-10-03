@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Static personal portfolio (plain HTML/CSS/vanilla JS). No build step, no package manager, no linter, no tests. Not a git repository.
+Static personal portfolio (plain HTML/CSS/vanilla JS). No build step, no package manager, no linter, no tests. Remote: `github.com/agents-adityaupadhyay/portfolio-adityaupadhyay-dev`, branch `main`.
 
 ## Running
 
