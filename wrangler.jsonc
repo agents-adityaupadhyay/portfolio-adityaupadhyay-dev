@@ -1,5 +1,5 @@
 {
-  "name": "adityaupadhyay-dev",
+  "name": "portfolio-adityaupadhyay-dev",
   "compatibility_date": "2026-10-01",
   // Static site only: no Worker script. Wrangler runs the Astro build before
   // every deploy and dev session, so dist/ always exists (also in Cloudflare CI).
