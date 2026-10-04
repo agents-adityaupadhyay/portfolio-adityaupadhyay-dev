@@ -10,6 +10,10 @@ npm run dev        # http://localhost:4321, reloads as you edit
 npm run preview    # production build served by Cloudflare's local runtime, http://localhost:8787
 ```
 
+## Launch
+
+The live site currently shows a "coming soon" page. To publish the full portfolio, set `LAUNCHED = true` in `src/config.ts` and push to `main`. Set it back to `false` to return to the coming-soon page.
+
 ## Edit content
 
 Everything you see on the page comes from `src/data/portfolio.ts`:

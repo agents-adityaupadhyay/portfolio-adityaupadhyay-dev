@@ -5,8 +5,9 @@ interface Props {
   title: string;
   description: string;
   summary: string; // shorter line for link previews
+  noindex?: boolean;
 }
-const { title, description, summary } = Astro.props;
+const { title, description, summary, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
@@ -16,6 +17,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
   <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex">}
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#FAFAF8" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0E0F12" media="(prefers-color-scheme: dark)">

@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from './Icon.astro';
+import { portfolio as D } from '../data/portfolio';
+---
+<Base
+  title="Aditya Upadhyay | Forward Deployed Engineer"
+  description="Aditya Upadhyay, Forward Deployed Engineer. The new site is launching soon."
+  summary="The new portfolio of Aditya Upadhyay, Forward Deployed Engineer, is launching soon."
+  noindex
+>
+  <main class="soon container">
+    <p class="eyebrow"><span class="dot"></span>adityaupadhyay.dev / launching soon</p>
+    <h1 class="display">Still in the build. <em>Shipping soon.</em></h1>
+    <p class="lead">I'm Aditya Upadhyay, a Forward Deployed Engineer. I build integrations, AI agents and tooling inside customer teams. The full site, with projects, writing and demos, is almost ready.</p>
+    <div class="actions">
+      <a class="btn btn-accent" href={`mailto:${D.links.email}`}>
+        {D.links.email}
+        <Icon name="arrowRight" size={18} />
+      </a>
+    </div>
+  </main>
+  <footer class="footer container">
+    <span>&copy; {new Date().getFullYear()} Aditya Upadhyay</span>
+  </footer>
+</Base>
+
+<style>
+  .soon {
+    min-height: calc(100vh - 110px);
+    display: flex; flex-direction: column; justify-content: center;
+    padding-top: 64px; padding-bottom: 64px;
+  }
+  .soon .display { max-width: 14ch; }
+</style>
